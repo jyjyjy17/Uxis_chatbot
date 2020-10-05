@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragment.BoardQuestionFragment">
+
+
+    <TextView
+        android:id="@+id/questionTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="질문 제목"
+        android:textSize="12pt"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.052"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/back_button"
+        app:layout_constraintVertical_bias="0.015" />
+
+    <ImageButton
+        android:id="@+id/back_button"
+        android:layout_width="61dp"
+        android:layout_height="57dp"
+        android:src="?attr/homeAsUpIndicator"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.045"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.008" />
+
+    <TextView
+        android:id="@+id/question_content"
+        android:layout_width="413dp"
+        android:layout_height="254dp"
+        android:gravity="top"
+        android:text="질문 내용"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/questionTitle"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/answer_content"
+        android:layout_width="413dp"
+        android:layout_height="351dp"
+        android:gravity="top"
+        android:text="답변 내용"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/question_content" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

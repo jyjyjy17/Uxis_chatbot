@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/mainFragment">
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.team2.chatbot_uxis.fragment.MainFragment"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment_to_chatbotFragment"
+            app:destination="@id/chatbotFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_questionFragment"
+            app:destination="@id/questionFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_boardQuestionFragment"
+            app:destination="@id/boardQuestionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/chatbotFragment"
+        android:name="com.team2.chatbot_uxis.fragment.ChatbotFragment"
+        android:label="fragment_chatbot"
+        tools:layout="@layout/fragment_chatbot" >
+        <action
+            android:id="@+id/action_chatbotFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/questionFragment"
+        android:name="com.team2.chatbot_uxis.fragment.QuestionFragment"
+        android:label="fragment_question"
+        tools:layout="@layout/fragment_question" >
+        <action
+            android:id="@+id/action_questionFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/boardQuestionFragment"
+        android:name="com.team2.chatbot_uxis.fragment.BoardQuestionFragment"
+        android:label="fragment_board_question"
+        tools:layout="@layout/fragment_board_question" >
+        <action
+            android:id="@+id/action_boardQuestionFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
+</navigation>
