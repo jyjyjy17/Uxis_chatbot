@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.msg_box.view.*
 class msgAdapter(var datas:ArrayList<msgItem>):RecyclerView.Adapter<msgAdapter.ViewHolder>(){
     class ViewHolder(view: View):RecyclerView.ViewHolder(view) {
         var name = view.tv_name
-        var time = view.tv_time
+        //var time = view.tv_time
         var message = view.tv_msg
 
     }
@@ -25,7 +25,6 @@ class msgAdapter(var datas:ArrayList<msgItem>):RecyclerView.Adapter<msgAdapter.V
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.name.text = datas[position].name
-        holder.time.text = datas[position].time
         holder.message.text = datas[position].message
     }
 

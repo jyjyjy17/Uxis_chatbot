@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "485481832143",
+    "firebase_url": "https://uxischatbot.firebaseio.com",
+    "project_id": "uxischatbot",
+    "storage_bucket": "uxischatbot.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:485481832143:android:77d05936fa8091941fe1ba",
+        "android_client_info": {
+          "package_name": "com.team2.chatbot_uxis"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "485481832143-5b6e2s6mt83ujkoav3g89abiick92r57.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDD_gn4ITmeJzJaiOA29NbA4BOZnwwua7A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "485481832143-5b6e2s6mt83ujkoav3g89abiick92r57.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
