@@ -24,7 +24,7 @@ import kotlin.collections.ArrayList
 
 class ChatbotFragment : Fragment(),View.OnClickListener {
     lateinit var navController: NavController
-    lateinit var database :FirebaseDatabase
+    lateinit var database :FirebaseDatabase //채팅 이용을 위한 firebase사용.
     lateinit var chatRef :DatabaseReference
 
     private lateinit var recyclerView: RecyclerView
@@ -98,20 +98,29 @@ class ChatbotFragment : Fragment(),View.OnClickListener {
                 clickSend(v)
             }
         }
-
     }
 
     private fun clickSend(v: View) {
         var name = "user"
         var message = et.text.toString()
+        var viewType:Int = 0
 
         var calendar = Calendar.getInstance()
         var time:String = calendar.get(Calendar.HOUR_OF_DAY).toString()+":"+calendar.get(Calendar.MINUTE)
 
-        var msg = msgItem(name,message)
-        chatRef.push().setValue(msg)
+        var msg = msgItem(name,message,viewType)
+        chatRef.push().setValue(msg) //database에 방금 입력한 메세지 데이터 (node로) 추가
 
         et.setText("")
+    }
+
+    fun recieve(v:View){
+        var name = "chatbot"
+        lateinit var message:String //여기에 답변 저장.
+        var viewType=1
+
+        var msg = msgItem(name,message,viewType)
+        chatRef.push().setValue(msg)
 
     }
 }
