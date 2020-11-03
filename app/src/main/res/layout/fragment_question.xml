@@ -45,6 +45,7 @@
         app:layout_constraintVertical_bias="0.008" />
 
     <EditText
+        android:id="@+id/et_q"
         android:layout_width="409dp"
         android:layout_height="669dp"
         app:layout_constraintBottom_toBottomOf="parent"

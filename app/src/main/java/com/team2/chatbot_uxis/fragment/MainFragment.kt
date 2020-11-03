@@ -7,35 +7,81 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import com.team2.chatbot_uxis.BoardAdapter
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.database.*
+import com.google.firebase.database.ktx.database
+import com.google.firebase.database.ktx.getValue
+import com.google.firebase.ktx.Firebase
+import com.team2.chatbot_uxis.*
 import com.team2.chatbot_uxis.R
-import com.team2.chatbot_uxis.getBoardResponse
 import kotlinx.android.synthetic.main.fragment_main.*
 
 
 class MainFragment : Fragment(),View.OnClickListener {
     lateinit var navController: NavController
-    lateinit var BoardList :ArrayList<getBoardResponse>
-    lateinit var BoardAdapter:BoardAdapter
+    lateinit var database : FirebaseDatabase
+    lateinit var chatRef : DatabaseReference
+
+
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var viewAdapter: RecyclerView.Adapter<*>
+    private lateinit var viewManager: RecyclerView.LayoutManager
+    lateinit var boardList :ArrayList<BoardItem>
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_main, container, false)
+        database = Firebase.database
+        chatRef = database.getReference("Question")
+
+        var view = inflater.inflate(R.layout.fragment_main,container,false)
+        var context =view.context
+        boardList= ArrayList<BoardItem>()
+
+        viewManager=LinearLayoutManager(context)
+        viewAdapter=BoardAdapter(boardList)
+
+        recyclerView=view.findViewById<RecyclerView>(R.id.BoardRecyclerView).apply {
+            // in content do not change the layout size of the RecyclerView
+            setHasFixedSize(true)
+            layoutManager =viewManager
+            adapter=viewAdapter
+        }
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        navController=Navigation.findNavController(view)
+        question_button.setOnClickListener(this)
+        chatbot_button.setOnClickListener(this)
 
         //boardlist에 레트로핏으로 질문/답변 가져와서 값 저장.
         //adapter연결
         //adapter.setonclicklistener 정의
+        chatRef.addChildEventListener(object : ChildEventListener {
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                val q:BoardItem=snapshot.getValue<BoardItem>() as BoardItem
+                boardList.add(q)
+                recyclerView.adapter?.notifyDataSetChanged()
+            }
+            override fun onCancelled(error: DatabaseError) {
 
+            }
 
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
 
-        navController=Navigation.findNavController(view)
+            }
 
-        question_button.setOnClickListener(this)
-        chatbot_button.setOnClickListener(this)
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+
+            }
+            override fun onChildRemoved(snapshot: DataSnapshot) {
+
+            }
+
+        })
+
 
 
     }

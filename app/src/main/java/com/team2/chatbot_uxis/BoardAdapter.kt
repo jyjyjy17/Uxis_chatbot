@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class BoardAdapter(val BoardList:ArrayList<BoardData>):RecyclerView.Adapter<BoardAdapter.BoardViewHolder>(){
+class BoardAdapter(val BoardList:ArrayList<BoardItem>):RecyclerView.Adapter<BoardAdapter.BoardViewHolder>(){
     class BoardViewHolder(itemView: View) :RecyclerView.ViewHolder(itemView){
         var title = itemView.findViewById<TextView>(R.id.tv_title)
         var answer = itemView.findViewById<TextView>(R.id.tv_answer)
@@ -24,8 +24,11 @@ class BoardAdapter(val BoardList:ArrayList<BoardData>):RecyclerView.Adapter<Boar
     }
 
     override fun onBindViewHolder(holder: BoardAdapter.BoardViewHolder, position: Int) {
-        holder.title.text = BoardList[position].board_title
-        holder.answer.text = BoardList[position].board_condition
+        holder.title.text = BoardList[position].message
+        if( BoardList[position].answerType ==0)
+            holder.answer.text="미답변"
+        else
+            holder.answer.text="답변완료"
 
         //requestmanager 써야 함.
 
