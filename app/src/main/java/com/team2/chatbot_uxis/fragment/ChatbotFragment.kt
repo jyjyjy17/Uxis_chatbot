@@ -131,13 +131,13 @@ class ChatbotFragment : Fragment(),View.OnClickListener {
 
                 /* Add the response from ChatBot to recyclerView */
                 var resultData = result.toString()
+                println(JSONObject(resultData).toString(4))
                 try {
                     resultData = JSONObject(result).getJSONArray("bubbles").getJSONObject(0).getString("data")
                 } catch (e: JSONException) {
 
                 }
                 chatRef.push().setValue(msgItem("chatbot", resultData, 1))
-                println(JSONObject(resultData).toString(4))
             }
         }.execute(Unit)
     }
