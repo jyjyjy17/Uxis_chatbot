@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -47,6 +48,7 @@ class MainFragment : Fragment(),View.OnClickListener {
             layoutManager =viewManager
             adapter=viewAdapter
         }
+
         return view
     }
 
@@ -56,32 +58,70 @@ class MainFragment : Fragment(),View.OnClickListener {
         question_button.setOnClickListener(this)
         chatbot_button.setOnClickListener(this)
 
+        (viewAdapter as BoardAdapter).setItemClickListener(object : BoardAdapter.ItemClickListener{
+            override fun onClick(view: View, position: Int) {
+                //data전송
+                var bundle:Bundle = bundleOf("title" to boardList[position].message)
+
+//                bundle.putString("title",boardList[position].message)
+//                bundle.putString("content",boardList[position].content)
+                navController.navigate(R.id.action_mainFragment_to_boardQuestionFragment,bundle)
+            }
+        })
+
         //boardlist에 레트로핏으로 질문/답변 가져와서 값 저장.
         //adapter연결
         //adapter.setonclicklistener 정의
-        chatRef.addChildEventListener(object : ChildEventListener {
-            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                val q:BoardItem=snapshot.getValue<BoardItem>() as BoardItem
-                boardList.add(q)
-                recyclerView.adapter?.notifyDataSetChanged()
-            }
+
+        chatRef.addValueEventListener(object:ValueEventListener{
             override fun onCancelled(error: DatabaseError) {
 
             }
 
-            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
-
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (i in snapshot.children){
+                    val q:BoardItem=i.getValue<BoardItem>() as BoardItem
+                    boardList.add(q)
+                    recyclerView.adapter?.notifyDataSetChanged()
+                }
             }
-
-            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-
-            }
-            override fun onChildRemoved(snapshot: DataSnapshot) {
-
-            }
-
         })
-
+//        chatRef.addListenerForSingleValueEvent(object: ValueEventListener{
+//            override fun onCancelled(error: DatabaseError) {
+//
+//            }
+//
+//            override fun onDataChange(snapshot: DataSnapshot) {
+//                for (i in snapshot.children){
+//                    val q:BoardItem=i.getValue<BoardItem>() as BoardItem
+//                    boardList.add(q)
+//                    recyclerView.adapter?.notifyDataSetChanged()
+//                }
+//            }
+//        })
+//
+//        chatRef.addChildEventListener(object : ChildEventListener {
+//            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+//                val q:BoardItem=snapshot.getValue<BoardItem>() as BoardItem
+//                boardList.add(q)
+//                recyclerView.adapter?.notifyDataSetChanged()
+//            }
+//            override fun onCancelled(error: DatabaseError) {
+//
+//            }
+//
+//            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+//
+//            }
+//
+//            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+//
+//            }
+//            override fun onChildRemoved(snapshot: DataSnapshot) {
+//
+//            }
+//
+//        })//end of chatRef listener
 
 
     }
@@ -99,4 +139,6 @@ class MainFragment : Fragment(),View.OnClickListener {
 
        }
     }
+
+
 }

@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 
 class BoardAdapter(val BoardList:ArrayList<BoardItem>):RecyclerView.Adapter<BoardAdapter.BoardViewHolder>(){
@@ -24,14 +25,28 @@ class BoardAdapter(val BoardList:ArrayList<BoardItem>):RecyclerView.Adapter<Boar
     }
 
     override fun onBindViewHolder(holder: BoardAdapter.BoardViewHolder, position: Int) {
+        //boardItem :title,answer,content로 구성.
         holder.title.text = BoardList[position].message
         if( BoardList[position].answerType ==0)
             holder.answer.text="미답변"
         else
             holder.answer.text="답변완료"
 
-        //requestmanager 써야 함.
+        //requestmanager 써야 함
+        holder.itemView.setOnClickListener {
+            itemClickListner.onClick(it, position)
+        }
+    }
+    interface ItemClickListener {
+        fun onClick(view: View, position: Int)
+    }
 
+    //클릭리스너 선언
+    private lateinit var itemClickListner: ItemClickListener
+
+    //클릭리스너 등록 매소드
+    fun setItemClickListener(itemClickListener: ItemClickListener) {
+        this.itemClickListner = itemClickListener
     }
 
 }
