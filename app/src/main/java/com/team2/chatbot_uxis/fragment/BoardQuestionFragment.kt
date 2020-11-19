@@ -40,7 +40,7 @@ class BoardQuestionFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when(v?.id){
             R.id.back_button->{
-                R.id.action_boardQuestionFragment_to_mainFragment
+                navController.navigate(R.id.action_boardQuestionFragment_to_mainFragment)
             }
         }
     }
