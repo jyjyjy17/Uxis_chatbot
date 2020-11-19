@@ -29,8 +29,8 @@
 
     <TextView
         android:id="@+id/imageTitle"
-        android:layout_width="230dp"
-        android:layout_height="22dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginTop="4dp"
         android:text="imageTitle"
@@ -39,12 +39,23 @@
 
     <TextView
         android:id="@+id/description"
-        android:layout_width="230dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginTop="4dp"
         android:text="Description"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageTitle" />
+
+    <Button
+        android:visibility="gone"
+        android:id="@+id/link_btn"
+        android:layout_width="230dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="3dp"
+        android:text="Link test"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/description" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

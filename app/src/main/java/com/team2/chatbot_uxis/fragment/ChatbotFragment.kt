@@ -68,11 +68,9 @@ class ChatbotFragment : Fragment(),View.OnClickListener {
         chatRef.addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 val msg:msgItem = snapshot.getValue<msgItem>() as msgItem
-                println(msg)
                 msgItemList.add(msg)
                 recyclerView.adapter?.notifyDataSetChanged()//이게 될까...
-
-
+                recyclerView.smoothScrollToPosition(msgItemList.count()-1)
             }
             override fun onCancelled(error: DatabaseError) {
 

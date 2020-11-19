@@ -1,12 +1,14 @@
 package com.team2.chatbot_uxis
 
 import android.content.Context
+import android.content.Intent
 import android.database.Cursor
 import android.net.Uri
 import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.msg_box_answer.view.*
@@ -14,6 +16,7 @@ import kotlinx.android.synthetic.main.msg_box_answer.view.tv_name
 import kotlinx.android.synthetic.main.msg_box_answer_cover.view.*
 import org.json.JSONException
 import org.json.JSONObject
+import java.util.regex.Pattern
 
 
 class msgAdapter(private var context: Context, var datas:ArrayList<msgItem>) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
@@ -59,6 +62,27 @@ class msgAdapter(private var context: Context, var datas:ArrayList<msgItem>) : R
                         imageTitle.text = cover.getString("title")
                         Picasso.with(context).load(Uri.parse(cover.getJSONObject("data").getString("imageUrl"))).into(image)
                         description.text = cover.getJSONObject("data").getString("description")
+                        if ( res.has("contentTable") ) {
+                            val urlIntent = Intent(Intent.ACTION_VIEW)
+                            val linkData = res.getJSONArray("contentTable")
+                                .getJSONArray(0)
+                                .getJSONObject(0)
+                                .getJSONObject("data")
+                            val linkURL = linkData.getJSONObject("data")
+                                .getJSONObject("action")
+                                .getJSONObject("data")
+                                .getString("url")
+                            val linkTitle = linkData.getString("title")
+                            link_btn.setOnClickListener {
+                                urlIntent.data = Uri.parse(linkURL)
+                                context.startActivity(urlIntent)
+                            }
+                            link_btn.text = linkTitle
+                            link_btn.visibility = View.VISIBLE
+                        } else {
+                            link_btn.visibility = View.GONE
+                        }
+
                     } catch (e: JSONException) {
                         println(e)
                     }
