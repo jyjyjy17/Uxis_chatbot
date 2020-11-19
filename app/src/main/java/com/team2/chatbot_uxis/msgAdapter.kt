@@ -22,7 +22,8 @@ class msgAdapter(private var context: Context, var datas:ArrayList<msgItem>) : R
         return when (viewType) {
             0 -> ViewHolderQuestion(LayoutInflater.from(context).inflate(R.layout.msg_box_question,parent,false))
             1 -> ViewHolderAnswer(LayoutInflater.from(context).inflate(R.layout.msg_box_answer,parent,false))
-            else -> ViewHolderAnswerWithCover(LayoutInflater.from(context).inflate(R.layout.msg_box_answer_cover,parent,false))
+            2 -> ViewHolderAnswerWithCover(LayoutInflater.from(context).inflate(R.layout.msg_box_answer_cover,parent,false))
+            else -> ViewHolderAnswerWithCards(LayoutInflater.from(context).inflate(R.layout.msg_box_answer_cover,parent,false))
         }
     }
 
@@ -45,13 +46,27 @@ class msgAdapter(private var context: Context, var datas:ArrayList<msgItem>) : R
                     } catch (e: JSONException) {
                         println(e)
                     }
-                    tv_name.text = "답변"
+                    tv_name.text = "With Text"
                     tv_msg.text = message
+                }
+            }
+            is ViewHolderAnswerWithCover -> {
+                holder.itemView.run {
+                    tv_name.text = "With Cover"
+                    try {
+                        var res = JSONObject(datas[position].message)
+                        var cover = res.getJSONObject("cover")
+                        imageTitle.text = cover.getString("title")
+                        Picasso.with(context).load(Uri.parse(cover.getJSONObject("data").getString("imageUrl"))).into(image)
+                        description.text = cover.getJSONObject("data").getString("description")
+                    } catch (e: JSONException) {
+                        println(e)
+                    }
                 }
             }
             else -> {
                 holder.itemView.run {
-                    tv_name.text = "답변 with Cover"
+                    tv_name.text = "With Cards"
                     try {
                         var res = JSONObject(datas[position].message)
                         var cover = res.getJSONObject("cover")
@@ -88,5 +103,6 @@ class msgAdapter(private var context: Context, var datas:ArrayList<msgItem>) : R
     class ViewHolderQuestion(view: View):RecyclerView.ViewHolder(view)
     class ViewHolderAnswerWithCover(view: View):RecyclerView.ViewHolder(view)
     class ViewHolderAnswer(view: View):RecyclerView.ViewHolder(view)
+    class ViewHolderAnswerWithCards(view: View):RecyclerView.ViewHolder(view)
 
 }
