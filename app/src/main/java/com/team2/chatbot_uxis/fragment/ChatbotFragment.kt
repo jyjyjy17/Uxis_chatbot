@@ -1,5 +1,6 @@
 package com.team2.chatbot_uxis.fragment
 
+import android.os.AsyncTask
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -21,6 +22,10 @@ import kotlinx.android.synthetic.main.fragment_chatbot.*
 import kotlinx.android.synthetic.main.fragment_chatbot.view.*
 import java.util.*
 import kotlin.collections.ArrayList
+import com.team2.chatbot_uxis.callChatBot
+import org.json.JSONException
+import org.json.JSONObject
+import org.xml.sax.Parser
 
 class ChatbotFragment : Fragment(),View.OnClickListener {
     lateinit var navController: NavController
@@ -42,7 +47,7 @@ class ChatbotFragment : Fragment(),View.OnClickListener {
         msgItemList = ArrayList<msgItem>()
 
         viewManager = LinearLayoutManager(context)
-        viewAdapter = msgAdapter(msgItemList)
+        viewAdapter = msgAdapter(context, msgItemList)
 
         recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView).apply {
             // in content do not change the layout size of the RecyclerView
@@ -60,11 +65,11 @@ class ChatbotFragment : Fragment(),View.OnClickListener {
         back_button.setOnClickListener(this)
         send_button.setOnClickListener(this)
 
-        chatRef.addChildEventListener(object : ChildEventListener{
+        chatRef.addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 val msg:msgItem = snapshot.getValue<msgItem>() as msgItem
+                println(msg)
                 msgItemList.add(msg)
-
                 recyclerView.adapter?.notifyDataSetChanged()//이게 될까...
 
 
@@ -101,26 +106,39 @@ class ChatbotFragment : Fragment(),View.OnClickListener {
     }
 
     private fun clickSend(v: View) {
-        var name = "user"
         var message = et.text.toString()
-        var viewType:Int = 0
 
-        var calendar = Calendar.getInstance()
-        var time:String = calendar.get(Calendar.HOUR_OF_DAY).toString()+":"+calendar.get(Calendar.MINUTE)
+        /* Send message to ChatBot in background */
+        val sendData = object : AsyncTask<Unit, Unit, String>() {
+            override fun doInBackground(vararg params: Unit?): String? {
+                var res = callChatBot.main(message)
+                return res
+            }
 
-        var msg = msgItem(name,message,viewType)
-        chatRef.push().setValue(msg) //database에 방금 입력한 메세지 데이터 (node로) 추가
+            override fun onPreExecute() {
+                super.onPreExecute()
 
-        et.setText("")
-    }
+                /* Add the message what user sent to ChatBot to recyclerView */
+                var calendar = Calendar.getInstance()
+                var time:String = calendar.get(Calendar.HOUR_OF_DAY).toString()+":"+calendar.get(Calendar.MINUTE)
+                var msg = msgItem("me", message, 0)
+                chatRef.push().setValue(msg) //database에 방금 입력한 메세지 데이터 (node로) 추가
+                et.setText("")
+            }
 
-    fun recieve(v:View){
-        var name = "chatbot"
-        lateinit var message:String //여기에 답변 저장.
-        var viewType=1
+            override fun onPostExecute(result: String?) {
+                super.onPostExecute(result)
 
-        var msg = msgItem(name,message,viewType)
-        chatRef.push().setValue(msg)
+                /* Add the response from ChatBot to recyclerView */
+                var resultData = result.toString()
+                println(JSONObject(resultData).toString(4))
+                try {
+                    resultData = JSONObject(result).getJSONArray("bubbles").getJSONObject(0).getString("data")
+                } catch (e: JSONException) {
 
+                }
+                chatRef.push().setValue(msgItem("chatbot", resultData, 1))
+            }
+        }.execute(Unit)
     }
 }
