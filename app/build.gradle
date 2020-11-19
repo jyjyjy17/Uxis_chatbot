@@ -1,6 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: "androidx.navigation.safeargs.kotlin"
 android {
     compileSdkVersion 29
 
@@ -44,4 +46,3 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.5.2'
 }
 
-apply plugin: 'com.google.gms.google-services'
