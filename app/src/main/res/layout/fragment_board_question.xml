@@ -9,8 +9,8 @@
 
     <TextView
         android:id="@+id/questionTitle"
-        android:layout_width="412dp"
-        android:layout_height="301dp"
+        android:layout_width="410dp"
+        android:layout_height="150dp"
         android:text="질문 제목"
         android:textSize="12pt"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -32,15 +32,46 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.008" />
 
-    <TextView
-        android:id="@+id/answer_content"
-        android:layout_width="413dp"
-        android:layout_height="351dp"
-        android:gravity="top"
-        android:text="답변 내용"
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/miniRecyclerView"
+        android:layout_width="417dp"
+        android:layout_height="434dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/questionTitle">
+
+    </androidx.recyclerview.widget.RecyclerView>
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="460dp"
+        android:layout_height="54dp"
+        android:background="@color/colorPrimary"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent">
 
+        <Button
+            android:id="@+id/send_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:backgroundTint="#ff8800"
+            android:text="send" />
 
+        <EditText
+            android:id="@+id/et"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Input message"
+            android:inputType="textMultiLine"
+            android:maxLines="3"
+            android:padding="10dp" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

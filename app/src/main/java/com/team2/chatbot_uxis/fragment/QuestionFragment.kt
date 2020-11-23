@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.fragment_chatbot.*
 import kotlinx.android.synthetic.main.fragment_chatbot.back_button
 import kotlinx.android.synthetic.main.fragment_question.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 class QuestionFragment : Fragment(), View.OnClickListener {
     lateinit var navController: NavController
@@ -60,12 +61,12 @@ class QuestionFragment : Fragment(), View.OnClickListener {
 
         var message = et_q.text.toString()
         var answerType = 0;
-        var content =""
+        var contents:ArrayList<String> = ArrayList()
 
         var calendar = Calendar.getInstance()
         var time:String = calendar.get(Calendar.HOUR_OF_DAY).toString()+":"+calendar.get(Calendar.MINUTE)
 
-        var msg = BoardItem(message,answerType,content)
+        var msg = BoardItem(message,answerType,contents)
         chatRef.push().setValue(msg) //database에 방금 입력한 메세지 데이터 (node로) 추가
 
         //디비 등록 완료
