@@ -117,8 +117,8 @@ class ChatbotFragment : Fragment(),View.OnClickListener {
                 super.onPreExecute()
 
                 /* Add the message what user sent to ChatBot to recyclerView */
-                var calendar = Calendar.getInstance()
-                var time:String = calendar.get(Calendar.HOUR_OF_DAY).toString()+":"+calendar.get(Calendar.MINUTE)
+//                var calendar = Calendar.getInstance()
+//                var time:String = calendar.get(Calendar.HOUR_OF_DAY).toString()+":"+calendar.get(Calendar.MINUTE)
                 var msg = msgItem("me", message, 0)
                 chatRef.push().setValue(msg) //database에 방금 입력한 메세지 데이터 (node로) 추가
                 et.setText("")

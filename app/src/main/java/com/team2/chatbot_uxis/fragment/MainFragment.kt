@@ -29,6 +29,7 @@ class MainFragment : Fragment(),View.OnClickListener {
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
     lateinit var boardList :ArrayList<BoardItem>
+    var keys :ArrayList<String> = arrayListOf()
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -61,7 +62,8 @@ class MainFragment : Fragment(),View.OnClickListener {
         (viewAdapter as BoardAdapter).setItemClickListener(object : BoardAdapter.ItemClickListener{
             override fun onClick(view: View, position: Int) {
                 //data전송
-                var bundle:Bundle = bundleOf("title" to boardList[position].message)
+                var bundle:Bundle =
+                    bundleOf("title" to boardList[position].message,"key" to keys[position])
 
 //                bundle.putString("title",boardList[position].message)
 //                bundle.putString("content",boardList[position].content)
@@ -82,47 +84,11 @@ class MainFragment : Fragment(),View.OnClickListener {
                 for (i in snapshot.children){
                     val q:BoardItem=i.getValue<BoardItem>() as BoardItem
                     boardList.add(q)
+                    keys.add(i.key.toString())
                     recyclerView.adapter?.notifyDataSetChanged()
                 }
             }
         })
-//        chatRef.addListenerForSingleValueEvent(object: ValueEventListener{
-//            override fun onCancelled(error: DatabaseError) {
-//
-//            }
-//
-//            override fun onDataChange(snapshot: DataSnapshot) {
-//                for (i in snapshot.children){
-//                    val q:BoardItem=i.getValue<BoardItem>() as BoardItem
-//                    boardList.add(q)
-//                    recyclerView.adapter?.notifyDataSetChanged()
-//                }
-//            }
-//        })
-//
-//        chatRef.addChildEventListener(object : ChildEventListener {
-//            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-//                val q:BoardItem=snapshot.getValue<BoardItem>() as BoardItem
-//                boardList.add(q)
-//                recyclerView.adapter?.notifyDataSetChanged()
-//            }
-//            override fun onCancelled(error: DatabaseError) {
-//
-//            }
-//
-//            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
-//
-//            }
-//
-//            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-//
-//            }
-//            override fun onChildRemoved(snapshot: DataSnapshot) {
-//
-//            }
-//
-//        })//end of chatRef listener
-
 
     }
 
