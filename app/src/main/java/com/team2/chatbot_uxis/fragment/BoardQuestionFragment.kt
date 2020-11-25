@@ -55,6 +55,7 @@ class BoardQuestionFragment : Fragment(), View.OnClickListener {
         database = Firebase.database
         chatRef = database.getReference("Question/"+key)
         //답변 리사이클러 뷰
+
         chatRef.addListenerForSingleValueEvent(object: ValueEventListener {
             override fun onCancelled(error: DatabaseError) {
             }
@@ -67,19 +68,15 @@ class BoardQuestionFragment : Fragment(), View.OnClickListener {
             }
         })
 
-
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         navController = Navigation.findNavController(view)
         send_button.setOnClickListener(this)
         back_button.setOnClickListener(this)
-
-
 
 
     }
@@ -101,6 +98,7 @@ class BoardQuestionFragment : Fragment(), View.OnClickListener {
         contents.add(message)
         updateMap["contents"] = contents
         chatRef.updateChildren(updateMap)
+        recyclerView.adapter?.notifyDataSetChanged()
 
         //EditText에 있는 글씨 지우기
         et.setText("")
