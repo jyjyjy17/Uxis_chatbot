@@ -1,6 +1,8 @@
 package com.team2.chatbot_uxis.fragment
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,9 +15,9 @@ import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
-import com.team2.chatbot_uxis.BoardAdapter
 import com.team2.chatbot_uxis.BoardItem
 import com.team2.chatbot_uxis.R
+import com.team2.chatbot_uxis.VolleyService
 import com.team2.chatbot_uxis.miniBoardAdapter
 import kotlinx.android.synthetic.main.fragment_board_question.*
 import kotlinx.android.synthetic.main.fragment_board_question.view.*
@@ -33,12 +35,12 @@ class BoardQuestionFragment : Fragment(), View.OnClickListener {
     lateinit var chatRef : DatabaseReference
     lateinit var key :String
     var contents:ArrayList<String> = arrayListOf()
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
 
         var view = inflater.inflate(R.layout.fragment_board_question, container, false)
-        var context =view.context
-
+        var context = view.context
 
         viewManager= LinearLayoutManager(context)
         viewAdapter= miniBoardAdapter(contents)
@@ -55,6 +57,7 @@ class BoardQuestionFragment : Fragment(), View.OnClickListener {
         database = Firebase.database
         chatRef = database.getReference("Question/"+key)
         //답변 리사이클러 뷰
+
         chatRef.addListenerForSingleValueEvent(object: ValueEventListener {
             override fun onCancelled(error: DatabaseError) {
             }
@@ -67,19 +70,15 @@ class BoardQuestionFragment : Fragment(), View.OnClickListener {
             }
         })
 
-
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         navController = Navigation.findNavController(view)
         send_button.setOnClickListener(this)
         back_button.setOnClickListener(this)
-
-
 
 
     }
@@ -101,9 +100,17 @@ class BoardQuestionFragment : Fragment(), View.OnClickListener {
         contents.add(message)
         updateMap["contents"] = contents
         chatRef.updateChildren(updateMap)
+        recyclerView.adapter?.notifyDataSetChanged()
 
         //EditText에 있는 글씨 지우기
         et.setText("")
 
+        VolleyService.testVolley(requireContext()) { res ->
+            if (res) {
+                Log.e("Request", "성공")
+            } else {
+                Log.e("Request", "실패")
+            }
+        }
     }
 }

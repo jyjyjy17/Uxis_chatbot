@@ -1,12 +1,12 @@
 package com.team2.chatbot_uxis.fragment
 
+import android.content.Context
 import android.os.AsyncTask
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,16 +16,12 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import com.team2.chatbot_uxis.R
+import com.team2.chatbot_uxis.callChatBot
 import com.team2.chatbot_uxis.msgAdapter
 import com.team2.chatbot_uxis.msgItem
 import kotlinx.android.synthetic.main.fragment_chatbot.*
-import kotlinx.android.synthetic.main.fragment_chatbot.view.*
-import java.util.*
-import kotlin.collections.ArrayList
-import com.team2.chatbot_uxis.callChatBot
 import org.json.JSONException
 import org.json.JSONObject
-import org.xml.sax.Parser
 
 class ChatbotFragment : Fragment(),View.OnClickListener {
     lateinit var navController: NavController
@@ -68,11 +64,9 @@ class ChatbotFragment : Fragment(),View.OnClickListener {
         chatRef.addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 val msg:msgItem = snapshot.getValue<msgItem>() as msgItem
-                println(msg)
                 msgItemList.add(msg)
                 recyclerView.adapter?.notifyDataSetChanged()//이게 될까...
-
-
+                recyclerView.smoothScrollToPosition(msgItemList.count()-1)
             }
             override fun onCancelled(error: DatabaseError) {
 

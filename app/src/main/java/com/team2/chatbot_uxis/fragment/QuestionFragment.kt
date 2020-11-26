@@ -1,10 +1,10 @@
 package com.team2.chatbot_uxis.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.google.firebase.database.DatabaseReference
@@ -13,8 +13,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.team2.chatbot_uxis.BoardItem
 import com.team2.chatbot_uxis.R
-import com.team2.chatbot_uxis.msgItem
-import kotlinx.android.synthetic.main.fragment_chatbot.*
+import com.team2.chatbot_uxis.VolleyService
 import kotlinx.android.synthetic.main.fragment_chatbot.back_button
 import kotlinx.android.synthetic.main.fragment_question.*
 import java.util.*
@@ -39,8 +38,6 @@ class QuestionFragment : Fragment(), View.OnClickListener {
         navController = Navigation.findNavController(view)
         back_button.setOnClickListener(this)
         qRegister_button.setOnClickListener(this)
-
-
     }
 
     override fun onClick(v: View?) {

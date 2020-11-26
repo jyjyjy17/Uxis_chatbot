@@ -1,9 +1,8 @@
 package com.team2.chatbot_uxis
 
 import android.content.Context
-import android.database.Cursor
+import android.content.Intent
 import android.net.Uri
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,7 +21,8 @@ class msgAdapter(private var context: Context, var datas:ArrayList<msgItem>) : R
         return when (viewType) {
             0 -> ViewHolderQuestion(LayoutInflater.from(context).inflate(R.layout.msg_box_question,parent,false))
             1 -> ViewHolderAnswer(LayoutInflater.from(context).inflate(R.layout.msg_box_answer,parent,false))
-            else -> ViewHolderAnswerWithCover(LayoutInflater.from(context).inflate(R.layout.msg_box_answer_cover,parent,false))
+            2 -> ViewHolderAnswerWithCover(LayoutInflater.from(context).inflate(R.layout.msg_box_answer_cover,parent,false))
+            else -> ViewHolderAnswerWithCards(LayoutInflater.from(context).inflate(R.layout.msg_box_answer_cover,parent,false))
         }
     }
 
@@ -45,13 +45,48 @@ class msgAdapter(private var context: Context, var datas:ArrayList<msgItem>) : R
                     } catch (e: JSONException) {
                         println(e)
                     }
-                    tv_name.text = "답변"
+                    tv_name.text = "With Text"
                     tv_msg.text = message
+                }
+            }
+            is ViewHolderAnswerWithCover -> {
+                holder.itemView.run {
+                    tv_name.text = "With Cover"
+                    try {
+                        var res = JSONObject(datas[position].message)
+                        var cover = res.getJSONObject("cover")
+                        imageTitle.text = cover.getString("title")
+                        Picasso.with(context).load(Uri.parse(cover.getJSONObject("data").getString("imageUrl"))).into(image)
+                        description.text = cover.getJSONObject("data").getString("description")
+                        if ( res.has("contentTable") ) {
+                            val urlIntent = Intent(Intent.ACTION_VIEW)
+                            val linkData = res.getJSONArray("contentTable")
+                                .getJSONArray(0)
+                                .getJSONObject(0)
+                                .getJSONObject("data")
+                            val linkURL = linkData.getJSONObject("data")
+                                .getJSONObject("action")
+                                .getJSONObject("data")
+                                .getString("url")
+                            val linkTitle = linkData.getString("title")
+                            link_btn.setOnClickListener {
+                                urlIntent.data = Uri.parse(linkURL)
+                                context.startActivity(urlIntent)
+                            }
+                            link_btn.text = linkTitle
+                            link_btn.visibility = View.VISIBLE
+                        } else {
+                            link_btn.visibility = View.GONE
+                        }
+
+                    } catch (e: JSONException) {
+                        println(e)
+                    }
                 }
             }
             else -> {
                 holder.itemView.run {
-                    tv_name.text = "답변 with Cover"
+                    tv_name.text = "With Cards"
                     try {
                         var res = JSONObject(datas[position].message)
                         var cover = res.getJSONObject("cover")
@@ -88,5 +123,6 @@ class msgAdapter(private var context: Context, var datas:ArrayList<msgItem>) : R
     class ViewHolderQuestion(view: View):RecyclerView.ViewHolder(view)
     class ViewHolderAnswerWithCover(view: View):RecyclerView.ViewHolder(view)
     class ViewHolderAnswer(view: View):RecyclerView.ViewHolder(view)
+    class ViewHolderAnswerWithCards(view: View):RecyclerView.ViewHolder(view)
 
 }
