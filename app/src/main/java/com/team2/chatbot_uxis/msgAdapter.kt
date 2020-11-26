@@ -2,13 +2,10 @@ package com.team2.chatbot_uxis
 
 import android.content.Context
 import android.content.Intent
-import android.database.Cursor
 import android.net.Uri
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.msg_box_answer.view.*
@@ -16,7 +13,6 @@ import kotlinx.android.synthetic.main.msg_box_answer.view.tv_name
 import kotlinx.android.synthetic.main.msg_box_answer_cover.view.*
 import org.json.JSONException
 import org.json.JSONObject
-import java.util.regex.Pattern
 
 
 class msgAdapter(private var context: Context, var datas:ArrayList<msgItem>) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
